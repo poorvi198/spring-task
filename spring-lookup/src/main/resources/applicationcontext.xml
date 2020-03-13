@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <context:property-placeholder location="data.properties"/>
+
+<!--    <bean id="dateFormatter" class="java.text.SimpleDateFormat">-->
+<!--        <constructor-arg value="dd-MM-yyy"/>-->
+<!--    </bean>-->
+<!--    <bean id = "date" factory-bean="dateFormatter" factory-method="parse">-->
+<!--        <constructor-arg value="${departmentDate}"/>-->
+<!--    </bean>-->
+
+    <bean id="department"
+          class="org.springapp.entity.Department"
+            scope="prototype">
+        <property name="dName" value="${department}"/>
+        <property name="createdOn" ref="dataconvertor"/>
+    </bean>
+
+    <bean id="employee"
+          class = "org.springapp.entity.Employee"
+          scope="prototype">
+        <lookup-method name="getDepartment" bean="department"/>
+        <property name="name" value="${name}"/>
+        <property name="age" value="${age}"/>
+        <property name="salary" value="${salary}"/>
+        <property name="taskList" value="${tasks}"/>
+        <property name="department" ref="department"/>
+    </bean>
+    <bean class="org.springapp.utility.DataConverter" id="dataconvertor">
+        <property name="data" value="${departmentDate}"/>
+    </bean>
+</beans>
